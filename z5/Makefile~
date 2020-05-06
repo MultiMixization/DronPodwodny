@@ -1,0 +1,19 @@
+CPPFLAGS= -c -g -Wall -pedantic -std=c++17 
+
+__start__: main.out
+	./main.out
+
+main.out: obj/Dr3D_gnuplot_api.o obj/main.o
+	g++ -o example.out obj/example.o obj/Dr3D_gnuplot_api.o -lpthread
+
+obj/example.o: src/example.cpp inc/Dr3D_gnuplot_api.hh
+	g++ ${CPPFLAGS} -o obj/example.o src/main.cpp
+
+obj/Dr3D_gnuplot_api.o: src/Dr3D_gnuplot_api.cpp inc/Dr3D_gnuplot_api.hh
+	g++ ${CPPFLAGS} -o obj/Dr3D_gnuplot_api.o src/Dr3D_gnuplot_api.cpp
+
+inc/Dr3D_gnuplot_api.hh: inc/Draw3D_api_interface.hh
+	touch inc/Dr3D_gnuplot_api.hh
+
+clear:
+	rm -f obj/*.o
