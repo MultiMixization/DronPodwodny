@@ -1,0 +1,15 @@
+#ifndef PUNKT_HH
+#define PUNKT_HH
+
+class Punkt{
+  double[3] wsp;
+
+public:
+  Punkt();
+  Punkt(double xx, double yy, double zz);
+  Punkt(const Punkt &P);
+
+  const double & operator [](int index) const;
+  double & operator [](int index);
+}
+#endif

@@ -1,0 +1,9 @@
+#ifndef PROSTOPADLOSCIAN_HH
+#define PROSTOPADLOSCIAN_HH
+
+#include <iostream>
+
+#include "Wektor.hh"
+#include "Punkt.hh"
+
+#endif

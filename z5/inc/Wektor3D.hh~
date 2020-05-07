@@ -1,0 +1,17 @@
+#ifndef WEKTOR3D_HH
+#define WEKTOR3D_HH
+
+#include <iostream>
+
+#include "Wektor.hh"
+
+class Wektor3D : public Wektor<double, 3>{
+public:
+  Wektor3D() : Wektor<double, 3>() {};
+  Wektor3D(double xx, double yy, double zz) {tab[0]=xx; tab[1]=yy; tab[2]=zz;}
+  Wektor3D(const Wektor<double, 3> W) : Wektor<double, 3>(W){};
+
+  Wektor3D Odwroc(bool xx, bool yy, bool zz) const;
+}
+
+#endif
