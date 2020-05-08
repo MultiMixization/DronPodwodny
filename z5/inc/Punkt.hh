@@ -3,7 +3,10 @@
 
 #include <iostream>
 
+#include "Wektor3D.hh"
+
 class Punkt{
+protected:
   double wspl[3];  //Odpowiednio x,y,z
 
 public:
@@ -13,5 +16,7 @@ public:
 
   const double & operator [](int index) const;
   double & operator [](int index);
+
+  Punkt Translacja(const Wektor3D W);
 };
 #endif

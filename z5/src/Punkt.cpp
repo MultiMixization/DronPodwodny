@@ -19,3 +19,14 @@ double & Punkt::operator [](int index)
     }
   return wspl[index];
 }
+
+Punkt Punkt::Translacja(const Wektor3D W)
+{
+  Punkt temp;
+
+  temp[0]=(*this)[0]+W[0];
+  temp[1]=(*this)[1]+W[1];
+  temp[2]=(*this)[2]+W[2];
+
+  return temp;
+}

@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <string>
 #include <iostream>
 
+#include "Punkt.hh"
+
 /*!
  * \file Draw3D_api_interface.hh
  * File contains abstract interface for drawing in 3D.
@@ -55,6 +57,9 @@ namespace drawNS {
      * \param ind - 0 for x coord, 1 for y, 2 for z.
      * \return value of coord.
      */
+
+    Point3D(const Punkt P) : data{P[0], P[1], P[2]} {}
+    
     const double & operator[](uint ind) const {
       if (ind < 3)
 	return data[ind];
