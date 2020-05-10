@@ -99,3 +99,12 @@ MacierzObr MacierzObr::Obrot(double kat, wymiar wym)
     }
   return (*this);
 }
+
+Wektor3D operator *(const Wektor3D W, const MacierzObr M)
+{
+  Wektor3D temp;
+  temp[0]=M[0][0]*W[0]+M[1][0]*W[1]+M[2][0]*W[2];
+  temp[1]=M[0][1]*W[0]+M[1][1]*W[1]+M[2][1]*W[2];
+  temp[2]=M[0][2]*W[0]+M[1][2]*W[1]+M[2][2]*W[2];
+  return temp;
+}

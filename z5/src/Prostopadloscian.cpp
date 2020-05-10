@@ -6,11 +6,19 @@ Prostopadloscian::Prostopadloscian(const Wektor3D R)
   licz_obrot();
 }
 
-Prostopadloscian::Prostopadloscian(const MacierzObr & M, const Punkt & S, const Wektor3D & R)
+Prostopadloscian::Prostopadloscian(const MacierzObr M, const Punkt S, const Wektor3D R)
 {
   Srodek=S;
   referencyjny=R;
   Orientacja=M;
+  licz_obrot();
+}
+
+Prostopadloscian::Prostopadloscian(const double Ax, const double Ay, const double Az, const Punkt S, const Wektor3D R)
+{
+  Srodek=S;
+  referencyjny=R;
+  Orientacja=MacierzObr(Ax,x)*MacierzObr(Ay, y)*MacierzObr(Az, z);
   licz_obrot();
 }
 
@@ -28,10 +36,11 @@ void Prostopadloscian::licz_obrot()
 
 int Prostopadloscian::rysuj(std::shared_ptr<drawNS::Draw3DAPI> api)
 {
-  int temp=api->draw_polyhedron(std::vector<std::vector<drawNS::Point3D> > {
-      {drawNS::Point3D(wierzcholki[0]), drawNS::Point3D(wierzcholki[1]), drawNS::Point3D(wierzcholki[4]), drawNS::Point3D(wierzcholki[3])},
-	{drawNS::Point3D(wierzcholki[0]), drawNS::Point3D(wierzcholki[1]), drawNS::Point3D(wierzcholki[4]), drawNS::Point3D(wierzcholki[3])} 
+  licz_obrot();
+  id=api->draw_polyhedron(std::vector<std::vector<drawNS::Point3D> > {
+      {drawNS::Point3D(wierzcholki[0]), drawNS::Point3D(wierzcholki[1]), drawNS::Point3D(wierzcholki[2]), drawNS::Point3D(wierzcholki[3])},
+	{drawNS::Point3D(wierzcholki[4]), drawNS::Point3D(wierzcholki[5]), drawNS::Point3D(wierzcholki[6]), drawNS::Point3D(wierzcholki[7])} 
     }, "red");
 
-  return temp;
+  return id;
 }

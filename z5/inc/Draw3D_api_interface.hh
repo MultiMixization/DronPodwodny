@@ -59,6 +59,11 @@ namespace drawNS {
      */
 
     Point3D(const Punkt P) : data{P[0], P[1], P[2]} {}
+    /*!
+     * \brief Acess operator
+     * \param ind - P[0] for x coord, P[1] for y, p[3] for z.
+     * \return value of coord.
+     */
     
     const double & operator[](uint ind) const {
       if (ind < 3)

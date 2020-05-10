@@ -16,9 +16,18 @@ protected:
   double roll;
   double yaw;
 
-  //Obiekty dolaczone
-  Wektor3D Sruba1;
-  Wektor3D Sruba2;
+  //Obiekty doloczone
+  Prostopadloscian Korpus;
+  Prostopadloscian Sruba1;
+  Prostopadloscian Sruba2;
+
+  Wektor3D rozmKor;   //Rozmiar korpusu
+  Wektor3D rozmSrb1;  //Rozmiar silnika 1
+  Wektor3D rozmSrb2;  //Rozmiar silnika 2
+
+  //Wektory do srodkow obiektow dolaczonych
+  Wektor3D WekSruba1;
+  Wektor3D WekSruba2;
 
 public:
   Dron();
@@ -38,8 +47,10 @@ public:
   void setYaw(double Y) {yaw=Y;}
   double getYaw() const {return yaw;}
 
+  void rysuj(std::shared_ptr<drawNS::Draw3DAPI> api);
+  
   void wymaz(std::shared_ptr<drawNS::Draw3DAPI> api);
-  int rysuj(std::shared_ptr<drawNS::Draw3DAPI> api);
+  int rysKor(std::shared_ptr<drawNS::Draw3DAPI> api);
   int rysSrb1(std::shared_ptr<drawNS::Draw3DAPI> api);
   int rysSrb2(std::shared_ptr<drawNS::Draw3DAPI> api);
 };
