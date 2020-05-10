@@ -4,7 +4,7 @@ __start__: sterowanie
 	./sterowanie
 
 sterowanie: obj/Dron.o obj/Prostopadloscian.o obj/Wektor3D.o obj/MacierzObr.o obj/Wektor.o obj/Macierz.o obj/Punkt.o  obj/Dr3D_gnuplot_api.o obj/main.o
-	g++ -o sterowanie obj/main.o obj/Dr3D_gnuplot_api.o obj/Punkt.o obj/Wektor.o obj/Wektor3D.o obj/Macierz.o obj/MacierzObr.o obj/Prostopadloscian.o obj/Dron.o -lpthread
+	g++ -o sterowanie obj/main.o obj/Dr3D_gnuplot_api.o obj/Punkt.o obj/Wektor.o obj/Wektor3D.o obj/Macierz.o obj/MacierzObr.o obj/Prostopadloscian.o obj/Dron.o -lpthread -lncurses
 
 obj/main.o: src/main.cpp inc/Dr3D_gnuplot_api.hh
 	g++ ${CPPFLAGS} -o obj/main.o src/main.cpp

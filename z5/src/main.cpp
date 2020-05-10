@@ -27,7 +27,7 @@ int main()
   
   Dron droniszcze;
   droniszcze.rysuj(api);
-  wait4key();
+  droniszcze.ruch(api);
   droniszcze.wymaz(api);
   return 0;
 }
