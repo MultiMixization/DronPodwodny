@@ -1,28 +1,23 @@
 #include "Prostopadloscian.hh"
 
-Prostopadloscian::Prostopadloscian(const Wektor3D R)
+Prostopadloscian::Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A, const MacierzObr M, const Punkt S, const Wektor3D R)
 {
-  referencyjny=R;
-  licz_obrot();
+  setApi(A);
+  setSrodek(S);
+  setRef(R);
+  setOrientacja(M);
 }
 
-Prostopadloscian::Prostopadloscian(const MacierzObr M, const Punkt S, const Wektor3D R)
+Prostopadloscian::Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A, const double Ax, const double Ay, const double Az, const Punkt S, const Wektor3D R)
 {
-  Srodek=S;
-  referencyjny=R;
-  Orientacja=M;
-  licz_obrot();
+  setApi(A);
+  setSrodek(S);
+  setRef(R);
+  MacierzObr temp=MacierzObr(Ax,x)*MacierzObr(Ay, y)*MacierzObr(Az, z);
+  setOrientacja(temp);
 }
 
-Prostopadloscian::Prostopadloscian(const double Ax, const double Ay, const double Az, const Punkt S, const Wektor3D R)
-{
-  Srodek=S;
-  referencyjny=R;
-  Orientacja=MacierzObr(Ax,x)*MacierzObr(Ay, y)*MacierzObr(Az, z);
-  licz_obrot();
-}
-
-void Prostopadloscian::licz_obrot()
+void Prostopadloscian::licz_obrot(Punkt wierzcholki[])
 {
   wierzcholki[0]=Srodek.Translacja(Orientacja*referencyjny);
   wierzcholki[1]=Srodek.Translacja(Orientacja*referencyjny.Odwroc(1,0,0));
@@ -34,13 +29,12 @@ void Prostopadloscian::licz_obrot()
   wierzcholki[7]=Srodek.Translacja(Orientacja*referencyjny.Odwroc(0,1,1));
 }
 
-int Prostopadloscian::rysuj(std::shared_ptr<drawNS::Draw3DAPI> api)
+void Prostopadloscian::rysuj()
 {
-  licz_obrot();
+  Punkt wierzcholki[8];
+  licz_obrot(wierzcholki);
   id=api->draw_polyhedron(std::vector<std::vector<drawNS::Point3D> > {
       {drawNS::Point3D(wierzcholki[0]), drawNS::Point3D(wierzcholki[1]), drawNS::Point3D(wierzcholki[2]), drawNS::Point3D(wierzcholki[3])},
 	{drawNS::Point3D(wierzcholki[4]), drawNS::Point3D(wierzcholki[5]), drawNS::Point3D(wierzcholki[6]), drawNS::Point3D(wierzcholki[7])} 
     }, "red");
-
-  return id;
 }

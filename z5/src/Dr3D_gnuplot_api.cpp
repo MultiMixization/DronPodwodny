@@ -180,9 +180,9 @@ uint APIGnuPlot3D::draw_surface(const vector<vector<Point3D> > & points_map, con
 
 void APIGnuPlot3D::erase_shape(uint id) {
   shapes.erase(id);
-  if (refresh_rate_ms == 0) {
+  /*if (refresh_rate_ms == 0) {
     draw_all_shapes();
-  }
+    }*/
 }
 
 void APIGnuPlot3D::change_shape_color(uint id, const string & color) {

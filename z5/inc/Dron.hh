@@ -3,7 +3,7 @@
 
 #define ACCELERATION 0.01
 #define ANGLEACCELERATION 0.10
-#define FRAMETIME 48   //W milisekundach
+#define FRAMETIME 33  //W milisekundach
 
 #include <unistd.h>
 #include <ncurses.h>
@@ -15,9 +15,8 @@
 #include "Dr3D_gnuplot_api.hh"
 #include "Prostopadloscian.hh"
 
-class Dron{
+class Dron : public Prostopadloscian{
 protected:
-  Punkt pozycja;
   double PredkoscPrzod;
   double PredkoscPitch;
   double PredkoscYaw;
@@ -29,11 +28,9 @@ protected:
   double yaw;
 
   //Obiekty doloczone
-  Prostopadloscian Korpus;
   Prostopadloscian Sruba1;
   Prostopadloscian Sruba2;
 
-  Wektor3D rozmKor;   //Rozmiar korpusu
   Wektor3D rozmSrb1;  //Rozmiar silnika 1
   Wektor3D rozmSrb2;  //Rozmiar silnika 2
 
@@ -42,10 +39,7 @@ protected:
   Wektor3D WekSruba2;
 
 public:
-  Dron();
-
-  void setPozycja(Punkt P) {pozycja=P;}
-  Punkt getPozycja() const {return pozycja;}
+  Dron(std::shared_ptr<drawNS::Draw3DAPI> A);
   
   void setPredkoscPrzod(double P) {PredkoscPrzod=P;}
   double getPredkoscPrzod() const {return PredkoscPrzod;}
@@ -68,17 +62,18 @@ public:
   void setYaw(double Y) {yaw=Y;}
   double getYaw() const {return yaw;}
 
-  void ruch(std::shared_ptr<drawNS::Draw3DAPI> api);
+  void ruch();
 
-  void rysuj(std::shared_ptr<drawNS::Draw3DAPI> api);
+  void rysujAll();
   
-  void wymaz(std::shared_ptr<drawNS::Draw3DAPI> api);
-  int rysKor(std::shared_ptr<drawNS::Draw3DAPI> api);
-  int rysSrb1(std::shared_ptr<drawNS::Draw3DAPI> api);
-  int rysSrb2(std::shared_ptr<drawNS::Draw3DAPI> api);
+  void wymaz();
+  
+  void rysSrb1();
+  void rysSrb2();
 };
 
 bool kbhit(); //Kod zapozyczony z neta
+
 void delay(unsigned int msec);
 
 #endif

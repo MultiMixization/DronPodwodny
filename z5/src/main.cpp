@@ -2,6 +2,8 @@
 
 #define SIZE 10
 
+#include <iostream>
+
 #include "Dr3D_gnuplot_api.hh"
 #include "Wektor3D.hh"
 #include "MacierzObr.hh"
@@ -22,12 +24,13 @@ void wait4key()
 
 int main()
 {
+  std::cin.tie(NULL); //Przyspiesz wyswietlanie tekstu co zwieksza responsywnosc
   std::shared_ptr<drawNS::Draw3DAPI> api(new APIGnuPlot3D(-SIZE,SIZE,-SIZE,SIZE,-SIZE,SIZE));
   api->change_ref_time_ms(0);
   
-  Dron droniszcze;
-  droniszcze.rysuj(api);
-  droniszcze.ruch(api);
-  droniszcze.wymaz(api);
+  Dron droniszcze(api);
+  droniszcze.rysujAll();
+  droniszcze.ruch();
+  droniszcze.wymaz();
   return 0;
 }

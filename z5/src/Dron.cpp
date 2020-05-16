@@ -1,8 +1,12 @@
 #include "Dron.hh"
 
-Dron::Dron()
+Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
 {
-  pozycja={0,0,0};
+  setApi(A);
+  Sruba1.setApi(A);
+  Sruba2.setApi(A);
+  
+  Srodek={0,0,0};
   PredkoscPrzod=0;
   PredkoscPitch=0;
   PredkoscYaw=0;
@@ -12,25 +16,29 @@ Dron::Dron()
   roll=0;
   yaw=0;
   
-  rozmKor={1,1,1};
+  setRef({1,1,1});
   rozmSrb1={0.25,0.25,0.25};
   rozmSrb2={0.25,0.25,0.25};
 
-  WekSruba1={rozmKor[0]-0.5,-(rozmKor[1]+0.25), 0};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
-  WekSruba2={-(rozmKor[0]-0.5),-(rozmKor[1]+0.25), 0};
+  WekSruba1={referencyjny[0]-0.5,-(referencyjny[1]+0.25), 0};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
+  WekSruba2={-(referencyjny[0]-0.5),-(referencyjny[1]+0.25), 0};
 }
 
-void Dron::ruch(std::shared_ptr<drawNS::Draw3DAPI> api)
+void Dron::ruch()
 {
   char znak='x';
   MacierzObr temp=MacierzObr(pitch,x)*MacierzObr(roll,y)*MacierzObr(yaw,z);
   Wektor3D vel={0,1,0};
   initscr();
-  WINDOW *okno=newwin(0,0,10,10);
+  WINDOW *okno=newwin(20,50,0,0);
   refresh();
+  box(okno, 0, 0);
+  mvwprintw(okno, 1, 1, "Sterowanie dronem");
+  wrefresh(okno);
   noecho();
   cbreak();
   nodelay(okno, TRUE);
+  
   while(znak!=27)
     {
       znak='x';
@@ -81,75 +89,62 @@ void Dron::ruch(std::shared_ptr<drawNS::Draw3DAPI> api)
 	  setYaw(getYaw()+getPredkoscYaw());
 	  setRoll(getRoll()+getPredkoscRoll());
 	  temp=MacierzObr(pitch,x)*MacierzObr(roll,y)*MacierzObr(yaw,z);
-	  setPozycja(getPozycja().Translacja(getPredkoscPrzod()*vel*temp));wymaz(api);
-	  rysuj(api);
+	  setOrientacja(temp);
+	  
+	  setSrodek(getSrodek().Translacja(getPredkoscPrzod()*vel*getOrientacja()));
+	  wymaz();
+	  rysujAll();
 	  delay(FRAMETIME);
 	}
+      flushinp();
     }
   echo();
   endwin();
 }
 
-void Dron::rysuj(std::shared_ptr<drawNS::Draw3DAPI> api)
+void Dron::rysujAll()
 {
-  wymaz(api);
-  rysKor(api);
-  rysSrb1(api);
-  rysSrb2(api);
-}
-
-void Dron::wymaz(std::shared_ptr<drawNS::Draw3DAPI> api)
-{
-  Korpus.zmaz(api);
-  Sruba1.zmaz(api);
-  Sruba2.zmaz(api);
-}
-
-int Dron::rysKor(std::shared_ptr<drawNS::Draw3DAPI> api)
-{
-  Korpus.setSrodek(pozycja);
-  Korpus.setRef(rozmKor);
   MacierzObr temp=MacierzObr(pitch,x)*MacierzObr(roll,y)*MacierzObr(yaw,z);
-  Korpus.setOrientacja(temp);
-  int id=Korpus.rysuj(api);
-  
-  return id;
+  setOrientacja(temp);
+  rysuj();
+  rysSrb1();
+  rysSrb2();
 }
 
-int Dron::rysSrb1(std::shared_ptr<drawNS::Draw3DAPI> api)
+void Dron::wymaz()
+{
+  zmaz();
+  Sruba1.zmaz();
+  Sruba2.zmaz();
+}
+
+void Dron::rysSrb1()
 {
   Sruba1.setRef(rozmSrb1);
-  MacierzObr temp=MacierzObr(pitch,x)*MacierzObr(roll,y)*MacierzObr(yaw,z);
-  Sruba1.setOrientacja(temp);
-  Sruba1.setSrodek(pozycja.Translacja(WekSruba1*temp));
-  
-  return Sruba1.rysuj(api);
+  Sruba1.setOrientacja(Orientacja);
+  Sruba1.setSrodek(Srodek.Translacja(WekSruba1*Orientacja));
+  Sruba1.rysuj();
 }
 
-int Dron::rysSrb2(std::shared_ptr<drawNS::Draw3DAPI> api)
+void Dron::rysSrb2()
 {
   Sruba2.setRef(rozmSrb2);
-  MacierzObr temp=MacierzObr(pitch,x)*MacierzObr(roll,y)*MacierzObr(yaw,z);
-  Sruba2.setOrientacja(temp);
-  Sruba2.setSrodek(pozycja.Translacja(WekSruba2*temp));
-  
-  return Sruba2.rysuj(api);
+  Sruba2.setOrientacja(Orientacja);
+  Sruba2.setSrodek(Srodek.Translacja(WekSruba2*Orientacja));
+  Sruba2.rysuj();
 }
 
 bool kbhit()
 {
   struct timeval tv;
-  fd_set read_fd;
+  fd_set fds;
 
   tv.tv_sec=0;
   tv.tv_usec=0;
-  FD_ZERO(&read_fd);
-  FD_SET(0,&read_fd);
-  if(select(1, &read_fd, NULL, NULL, &tv) == -1)
-    return 0;
-  if(FD_ISSET(0,&read_fd))
-    return 1;
-  return 0;
+  FD_ZERO(&fds);
+  FD_SET(STDIN_FILENO, &fds);
+  select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
+  return FD_ISSET(STDIN_FILENO, &fds);
 }
 
 void delay(unsigned int msec)
