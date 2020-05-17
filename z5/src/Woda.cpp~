@@ -1,0 +1,23 @@
+#include "Woda.hh"
+
+using std::vector;
+using std::string;
+using drawNS::Point3D;
+using drawNS::APIGnuPlot3D;
+
+void Woda::rysuj()
+{
+  vector<vector<Point3D>> PD;
+  for(int j=-PLANEPOINT; j<=PLANEPOINT; ++j)
+    {
+      vector<Point3D> PM;
+      for(int i=-PLANEPOINT; i<=PLANEPOINT; ++i)
+	{
+	  Wektor3D tempW(i*PLANESKIP,j*PLANESKIP, poziom+Noise*(i%2==0?-1:1));
+	  tempW=Orientacja*tempW;
+	  PM.push_back(tempW);
+	}
+      PD.push_back(PM);
+    }
+  id=api->draw_surface(PD,"blue");
+}

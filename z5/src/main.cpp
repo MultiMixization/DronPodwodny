@@ -1,6 +1,6 @@
 #include <iostream>
 
-#define SIZE 10
+#define SIZE 20
 
 #include <iostream>
 
@@ -8,6 +8,7 @@
 #include "Wektor3D.hh"
 #include "MacierzObr.hh"
 #include "Dron.hh"
+#include "scena.hh"
 
 using std::vector;
 using drawNS::Point3D;
@@ -24,13 +25,14 @@ void wait4key()
 
 int main()
 {
-  std::cin.tie(NULL); //Przyspiesz wyswietlanie tekstu co zwieksza responsywnosc
+  //std::cin.tie(NULL); //Przyspiesz wyswietlanie tekstu co zwieksza responsywnosc
   std::shared_ptr<drawNS::Draw3DAPI> api(new APIGnuPlot3D(-SIZE,SIZE,-SIZE,SIZE,-SIZE,SIZE));
   api->change_ref_time_ms(0);
   
-  Dron droniszcze(api);
-  droniszcze.rysujAll();
-  droniszcze.ruch();
-  droniszcze.wymaz();
+  scena glowna(api);
+  glowna.inicjalizuj();
+  glowna.kontrola();
+  glowna.sprzatanie();
+  
   return 0;
 }

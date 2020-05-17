@@ -3,7 +3,6 @@
 
 #define ACCELERATION 0.01
 #define ANGLEACCELERATION 0.10
-#define FRAMETIME 33  //W milisekundach
 
 #include <unistd.h>
 #include <ncurses.h>
@@ -62,7 +61,9 @@ public:
   void setYaw(double Y) {yaw=Y;}
   double getYaw() const {return yaw;}
 
-  void ruch();
+  void ruch(char znak);
+
+  void updatePosition();
 
   void rysujAll();
   
@@ -71,9 +72,5 @@ public:
   void rysSrb1();
   void rysSrb2();
 };
-
-bool kbhit(); //Kod zapozyczony z neta
-
-void delay(unsigned int msec);
 
 #endif
