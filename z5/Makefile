@@ -3,8 +3,8 @@ CPPFLAGS= -c -g -Iinc -Wall -pedantic -std=c++17
 __start__: sterowanie
 	./sterowanie
 
-sterowanie: obj/Woda.o obj/Plaszczyzna.o obj/Scena.o obj/Dron.o obj/Prostopadloscian.o obj/Wektor3D.o obj/MacierzObr.o obj/Wektor.o obj/Macierz.o obj/Punkt.o  obj/Dr3D_gnuplot_api.o obj/main.o
-	g++ -o sterowanie obj/main.o obj/Dr3D_gnuplot_api.o obj/Punkt.o obj/Wektor.o obj/Wektor3D.o obj/Macierz.o obj/MacierzObr.o obj/Prostopadloscian.o obj/Dron.o obj/Scena.o obj/Plaszczyzna.o obj/Woda.o -lpthread -lncurses
+sterowanie: obj/gran8kat.o obj/Woda.o obj/Plaszczyzna.o obj/Scena.o obj/Dron.o obj/Prostopadloscian.o obj/Wektor3D.o obj/MacierzObr.o obj/Wektor.o obj/Macierz.o obj/Punkt.o  obj/Dr3D_gnuplot_api.o obj/main.o
+	g++ -o sterowanie obj/main.o obj/Dr3D_gnuplot_api.o obj/Punkt.o obj/Wektor.o obj/Wektor3D.o obj/Macierz.o obj/MacierzObr.o obj/Prostopadloscian.o obj/Dron.o obj/Scena.o obj/Plaszczyzna.o obj/Woda.o obj/gran8kat.o -lpthread -lncurses
 
 obj/main.o: src/main.cpp inc/Dr3D_gnuplot_api.hh
 	g++ ${CPPFLAGS} -o obj/main.o src/main.cpp
@@ -44,6 +44,9 @@ obj/Plaszczyzna.o: src/Plaszczyzna.cpp inc/Plaszczyzna.hh
 
 obj/Woda.o: src/Woda.cpp inc/Woda.hh
 	g++ ${CPPFLAGS} -o obj/Woda.o src/Woda.cpp
+
+obj/gran8kat.o: src/gran8kat.cpp inc/gran8kat.hh
+	g++ ${CPPFLAGS} -o obj/gran8kat.o src/gran8kat.cpp
 
 clear:
 	rm -f obj/*.o

@@ -1,7 +1,7 @@
 #ifndef PLASZCZYZNA_HH
 #define PLASZCZYZNA_HH
 
-#define PLANEPOINT 10
+#define PLANEPOINT 15
 #define PLANESKIP 5
 
 #include <vector>

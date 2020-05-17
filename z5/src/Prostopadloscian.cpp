@@ -13,7 +13,7 @@ Prostopadloscian::Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A, const d
   setApi(A);
   setSrodek(S);
   setRef(R);
-  MacierzObr temp=MacierzObr(Ax,x)*MacierzObr(Ay, y)*MacierzObr(Az, z);
+  MacierzObr temp=MacierzObr(Az,z)*MacierzObr(Ay, y)*MacierzObr(Ax, x);
   setOrientacja(temp);
 }
 

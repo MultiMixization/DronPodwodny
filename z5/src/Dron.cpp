@@ -23,8 +23,8 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   rozmSrb1={0.25,0.25,0.25};
   rozmSrb2={0.25,0.25,0.25};
 
-  WekSruba1={-referencyjny[0],(referencyjny[1]-0.25), 0};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
-  WekSruba2={-referencyjny[0],-(referencyjny[1]-0.25), 0};
+  WekSruba1={-referencyjny[0]-0.25,(referencyjny[1]-0.4), 0};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
+  WekSruba2={-referencyjny[0]-0.25,-(referencyjny[1]-0.4), 0};
 }
 
 void Dron::ruch(char znak)
@@ -102,7 +102,7 @@ void Dron::wymaz()
 void Dron::rysSrb1()
 {
   Sruba1.setRef(rozmSrb1);
-  Sruba1.setOrientacja(Orientacja);
+  Sruba1.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba1.setSrodek(Srodek.Translacja(WekSruba1*Orientacja));
   Sruba1.rysuj();
 }
@@ -110,7 +110,7 @@ void Dron::rysSrb1()
 void Dron::rysSrb2()
 {
   Sruba2.setRef(rozmSrb2);
-  Sruba2.setOrientacja(Orientacja);
+  Sruba2.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba2.setSrodek(Srodek.Translacja(WekSruba2*Orientacja));
   Sruba2.rysuj();
 }

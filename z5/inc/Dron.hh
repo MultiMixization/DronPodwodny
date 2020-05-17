@@ -13,6 +13,7 @@
 #include "Wektor3D.hh"
 #include "Dr3D_gnuplot_api.hh"
 #include "Prostopadloscian.hh"
+#include "gran8kat.hh"
 
 class Dron : public Prostopadloscian{
 protected:
@@ -27,8 +28,8 @@ protected:
   double yaw;
 
   //Obiekty doloczone
-  Prostopadloscian Sruba1;
-  Prostopadloscian Sruba2;
+  gran8kat Sruba1;
+  gran8kat Sruba2;
 
   Wektor3D rozmSrb1;  //Rozmiar silnika 1
   Wektor3D rozmSrb2;  //Rozmiar silnika 2

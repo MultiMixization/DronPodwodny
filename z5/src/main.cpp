@@ -1,6 +1,6 @@
 #include <iostream>
 
-#define SIZE 20
+#define SIZE 10
 
 #include <iostream>
 

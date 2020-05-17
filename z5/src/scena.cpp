@@ -5,7 +5,7 @@ void scena::inicjalizuj()
   dno.setPoziom(-9);
   woda.setPoziom(9);
   woda.rysuj();
-  dno.rysuj();
+  dno.rysuj();  //Zre wydajnosc. Nie wiem czemu
   dron.rysujAll();
   delay(FRAMETIME);
 }
