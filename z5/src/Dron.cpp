@@ -7,36 +7,30 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   Sruba2.setApi(A);
   
   Srodek={0,0,0};
-  PredkoscPrzod=0;
-  PredkoscPitch=0;
-  PredkoscYaw=0;
-  PredkoscRoll=0;
+  PredkoscPrzod=0.00;
+  PredkoscPitch=0.00;
+  PredkoscYaw=0.00;
+  PredkoscRoll=0.00;
   
-  pitch=0;
-  roll=0;
-  yaw=0;
+  pitch=90.00;
+  roll=0.00;
+  yaw=0.00;
   
   MacierzObr temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
   setOrientacja(temp);
   
   setRef({2,1,1});
-  rozmSrb1={0.25,0.25,0.25};
-  rozmSrb2={0.25,0.25,0.25};
+  rozmSrb={0.25,0.25,0.25};
 
-  WekSruba1={-referencyjny[0]-0.25,(referencyjny[1]-0.4), 0};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
-  WekSruba2={-referencyjny[0]-0.25,-(referencyjny[1]-0.4), 0};
+  WekSruba1={-getRef()[0]-0.25,(getRef()[1]-0.4), -0.25};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
+  WekSruba2={-getRef()[0]-0.25,-(getRef()[1]-0.4), -0.25};
 }
 
 void Dron::ruch(char znak)
 {
-  MacierzObr temp;
-  MacierzObr tempObr;
-  Wektor3D tempAcc;
-  Wektor3D vex={1,0,0};
-  Wektor3D vey={0,1,0};
-  Wektor3D vez={0,0,1};
-  temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
-  tempObr=MacierzObr(-yaw,z)*MacierzObr(-pitch,y)*MacierzObr(-roll,z);
+  double argYaw;
+  double argPitch;
+  double argRoll;
   switch(znak)
     {
     case 'w':
@@ -46,40 +40,53 @@ void Dron::ruch(char znak)
       setPredkoscPrzod(getPredkoscPrzod()-ACCELERATION);
       break;
     case 'a':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vez));
-      setPredkoscRoll(getPredkoscRoll()+tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()+tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()+tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argYaw)*sin(argPitch));
+      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argYaw)*sin(argRoll));
+      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argRoll)*cos(argPitch));  //cos(pi/2)!=0 Whyyyy?
       break;
     case 'd':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vez));
-      setPredkoscRoll(getPredkoscRoll()-tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()-tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()-tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argYaw)*sin(argPitch));
+      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argYaw)*sin(argRoll));
+      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argRoll)*cos(argPitch));
       break;
     case 'r':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vey));
-      setPredkoscRoll(getPredkoscRoll()+tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()+tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()+tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*sin(argYaw));
+      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argRoll)*cos(argYaw));
+      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argPitch)*sin(argRoll));
       break;
     case 'f':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vey));
-      setPredkoscRoll(getPredkoscRoll()-tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()-tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()-tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argPitch)*sin(argYaw));
+      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argRoll)*cos(argYaw));
+      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argPitch)*sin(argRoll));
       break;
     case 'e':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vex));
-      setPredkoscRoll(getPredkoscRoll()-tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()-tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()-tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argPitch)*cos(argYaw));
+      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argRoll)*sin(argYaw));
+      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argRoll)*sin(argPitch));
       break;
     case 'q':
-      tempAcc=tempObr*(ANGLEACCELERATION*(temp*vex));
-      setPredkoscRoll(getPredkoscRoll()+tempAcc[0]);
-      setPredkoscPitch(getPredkoscPitch()+tempAcc[1]);
-      setPredkoscYaw(getPredkoscYaw()+tempAcc[2]);
+      argPitch=pitch*M_PI/180;
+      argYaw=yaw*M_PI/180;
+      argRoll=roll*M_PI/180;
+      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*cos(argYaw));
+      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argRoll)*sin(argYaw));
+      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argRoll)*sin(argPitch));
+
       break;
     case ' ':
       setPredkoscPrzod(0);
@@ -101,10 +108,10 @@ void Dron::updatePosition()
       setPitch(getPitch()+getPredkoscPitch());
       setYaw(getYaw()+getPredkoscYaw());
       setRoll(getRoll()+getPredkoscRoll());
-      temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
+      temp=MacierzObr(getYaw(),z)*MacierzObr(getPitch(),y)*MacierzObr(getRoll(),x);
       setOrientacja(temp);
       
-      setSrodek(getSrodek().Translacja(getOrientacja()*getPredkoscPrzod()*vex));
+      setSrodek(getSrodek().Translacja(getOrientacja()*(getPredkoscPrzod()*vex)));
       
       wymaz();
       rysujAll();
@@ -127,7 +134,7 @@ void Dron::wymaz()
 
 void Dron::rysSrb1()
 {
-  Sruba1.setRef(rozmSrb1);
+  Sruba1.setRef(rozmSrb);
   Sruba1.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba1.setSrodek(Srodek.Translacja(Orientacja*WekSruba1));
   Sruba1.rysuj();
@@ -135,7 +142,7 @@ void Dron::rysSrb1()
 
 void Dron::rysSrb2()
 {
-  Sruba2.setRef(rozmSrb2);
+  Sruba2.setRef(rozmSrb);
   Sruba2.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba2.setSrodek(Srodek.Translacja(Orientacja*WekSruba2));
   Sruba2.rysuj();

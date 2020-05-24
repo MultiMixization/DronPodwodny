@@ -3,6 +3,7 @@
 #define SIZE 10
 
 #include <iostream>
+#include <math.h>
 
 #include "Dr3D_gnuplot_api.hh"
 #include "Wektor3D.hh"
