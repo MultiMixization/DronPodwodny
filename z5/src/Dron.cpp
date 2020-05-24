@@ -5,6 +5,8 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   setApi(A);
   Sruba1.setApi(A);
   Sruba2.setApi(A);
+  //Plywak1.setApi(A);
+  //Plywak2.setApi(A);
   
   Srodek={0,0,0};
   PredkoscPrzod=0.00;
@@ -13,17 +15,24 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   PredkoscRoll=0.00;
   
   pitch=90.00;
-  roll=0.00;
-  yaw=0.00;
+  roll=90.00;
+  yaw=90.00;
   
   MacierzObr temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
   setOrientacja(temp);
   
   setRef({2,1,1});
-  rozmSrb={0.25,0.25,0.25};
+
+  Sruba1.setRef({0.25,0.25,0.25});
+  Sruba2.setRef({0.25,0.25,0.25});
+  //Plywak1.setRef({0.25,0.25,2});
+  //Plywak2.setRef({0.25,0.25,2});
 
   WekSruba1={-getRef()[0]-0.25,(getRef()[1]-0.4), -0.25};  //Wektory opisujace polozenie srub wzgledem centrum pojazdu(centrum korpusu)
   WekSruba2={-getRef()[0]-0.25,-(getRef()[1]-0.4), -0.25};
+
+  //WekPlywak1={0,getRef()[1],-getRef()[2]};
+  //WekPlywak2={0,-getRef()[1],-getRef()[2]};
 }
 
 void Dron::ruch(char znak)
@@ -59,7 +68,7 @@ void Dron::ruch(char znak)
       argPitch=pitch*M_PI/180;
       argYaw=yaw*M_PI/180;
       argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*sin(argYaw));
+      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*sin(argYaw));   //Flawed
       setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argRoll)*cos(argYaw));
       setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argPitch)*sin(argRoll));
       break;
@@ -134,7 +143,6 @@ void Dron::wymaz()
 
 void Dron::rysSrb1()
 {
-  Sruba1.setRef(rozmSrb);
   Sruba1.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba1.setSrodek(Srodek.Translacja(Orientacja*WekSruba1));
   Sruba1.rysuj();
@@ -142,8 +150,23 @@ void Dron::rysSrb1()
 
 void Dron::rysSrb2()
 {
-  Sruba2.setRef(rozmSrb);
   Sruba2.setOrientacja(Orientacja*MacierzObr(90,y));
   Sruba2.setSrodek(Srodek.Translacja(Orientacja*WekSruba2));
   Sruba2.rysuj();
 }
+/*
+
+void Dron::rysPlywak1()
+{
+  Plywak1.setOrientacja(Orientacja*MacierzObr(90,y));
+  Plywak1.setSrodek(Srodek.Translacja(Orientacja*WekPlywak1));
+  Plywak1.rysuj();
+}
+
+void Dron::rysPlywak2()
+{
+  Plywak2.setOrientacja(Orientacja*MacierzObr(90,y));
+  Plywak2.setSrodek(Srodek.Translacja(Orientacja*WekPlywak2));
+  Plywak2.rysuj();
+}
+*/

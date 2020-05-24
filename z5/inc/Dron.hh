@@ -63,10 +63,8 @@ protected:
    */
   gran8kat Sruba2;
 
-  /*!
-   * \brief size of a propeller
-   */
-  Wektor3D rozmSrb;
+  //gran8kat Plywak1;    //Z jakiegos powodu dodanie kolejnej figury rozwala pozastale i powoduje stack smashing
+  //gran8kat Plywak2;
 
   /*!
    * \brief vector leading from the middle of the body to an attachment point of a propeller 1
@@ -78,6 +76,9 @@ protected:
    */
   Wektor3D WekSruba2;
 
+  //Wektor3D WekPlywak1;
+  //Wektor3D WekPlywak2;
+
   /*!
    * \brief draws propeller 1 position according to current yaw, pitch, roll and body position
    */
@@ -87,6 +88,9 @@ protected:
    * \brief draws propeller 2 position according to current yaw, pitch, roll and body position
    */
   void rysSrb2();
+
+  //void rysPlywak1();
+  //void rysPlywak2();
 
 public:
   

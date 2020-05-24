@@ -34,6 +34,8 @@ int main()
   glowna.inicjalizuj();
   glowna.kontrola();
   glowna.sprzatanie();
+
+  //cout << sizeof(glowna) << endl;
   
   return 0;
 }
