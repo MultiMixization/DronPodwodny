@@ -108,3 +108,25 @@ Wektor3D operator *(const Wektor3D W, const MacierzObr M)
   temp[2]=M[0][2]*W[0]+M[1][2]*W[1]+M[2][2]*W[2];
   return temp;
 }
+
+Wektor3D MacierzObr::Euler()
+{
+  double sy=sqrt(tab[0][0]*tab[0][0]+tab[1][0]*tab[1][0]);
+
+  bool singular = sy<1e-6;
+
+  Wektor3D temp;
+  if(!singular)
+    {
+      temp[0]=atan2(tab[2][1],tab[2][2])*180/M_PI;
+      temp[1]=atan2(-tab[2][0],sy)*180/M_PI;
+      temp[2]=atan2(tab[1][0],tab[0][0])*180/M_PI;
+    }
+  else
+    {
+      temp[0]=atan2(-tab[1][2],tab[1][1])*180/M_PI;
+      temp[1]=atan2(-tab[2][0],sy)*180/M_PI;
+      temp[2]=0;
+    }
+  return temp;
+}

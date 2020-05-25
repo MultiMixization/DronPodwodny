@@ -17,6 +17,7 @@ public:
   MacierzObr(const Macierz<double, 3> M) : Macierz<double, 3>(M) {}
 
   MacierzObr Obrot(double kat, wymiar wym);
+  Wektor3D Euler();
 };
 
 Wektor3D operator *(const Wektor3D W, const MacierzObr M); //Do obrotu wektora

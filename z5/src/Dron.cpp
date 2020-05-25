@@ -14,9 +14,9 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   PredkoscYaw=0.00;
   PredkoscRoll=0.00;
   
-  pitch=90.00;
+  pitch=0.00;
   roll=90.00;
-  yaw=90.00;
+  yaw=0.00;
   
   MacierzObr temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
   setOrientacja(temp);
@@ -37,9 +37,9 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
 
 void Dron::ruch(char znak)
 {
-  double argYaw;
-  double argPitch;
-  double argRoll;
+  Wektor3D temp;
+  MacierzObr temp2;
+  //Katy Taita-Bryana konwencja zyx
   switch(znak)
     {
     case 'w':
@@ -49,53 +49,52 @@ void Dron::ruch(char znak)
       setPredkoscPrzod(getPredkoscPrzod()-ACCELERATION);
       break;
     case 'a':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argYaw)*sin(argPitch));
-      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argYaw)*sin(argRoll));
-      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argRoll)*cos(argPitch));  //cos(pi/2)!=0 Whyyyy?
+      temp={0,0,1};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case 'd':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argYaw)*sin(argPitch));
-      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argYaw)*sin(argRoll));
-      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argRoll)*cos(argPitch));
+      temp={0,0,1};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case 'r':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*sin(argYaw));   //Flawed
-      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argRoll)*cos(argYaw));
-      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argPitch)*sin(argRoll));
+      temp={0,1,0};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case 'f':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argPitch)*sin(argYaw));
-      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argRoll)*cos(argYaw));
-      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argPitch)*sin(argRoll));
+      temp={0,1,0};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case 'e':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION*cos(argPitch)*cos(argYaw));
-      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION*cos(argRoll)*sin(argYaw));
-      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION*cos(argRoll)*sin(argPitch));
+      temp={1,0,0};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case 'q':
-      argPitch=pitch*M_PI/180;
-      argYaw=yaw*M_PI/180;
-      argRoll=roll*M_PI/180;
-      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION*cos(argPitch)*cos(argYaw));
-      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION*cos(argRoll)*sin(argYaw));
-      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION*cos(argRoll)*sin(argPitch));
-
+      temp={1,0,0};
+      temp=getOrientacja()*temp;
+      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
+      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
       break;
     case ' ':
       setPredkoscPrzod(0);

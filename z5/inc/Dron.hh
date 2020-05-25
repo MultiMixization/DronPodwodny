@@ -2,7 +2,7 @@
 #define DRON_HH
 
 #define ACCELERATION 0.01
-#define ANGLEACCELERATION 0.10
+#define ANGLEACCELERATION 0.1
 
 #include <unistd.h>
 #include <ncurses.h>
