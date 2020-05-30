@@ -10,7 +10,13 @@
 #include <sys/select.h>
 
 #include "Dr3D_gnuplot_api.hh"
+#include "MacierzObr.hh"
+#include "Wektor3D.hh"
+#include "Punkt.hh"
 #include "Dron.hh"
+#include "DronInterface.hh"
+#include "Przeszkoda.hh"
+#include "PrzeszkodaProstopadloscian.hh"
 #include "Plaszczyzna.hh"
 #include "Woda.hh"
 

@@ -14,6 +14,7 @@ public:
   MacierzObr() : Macierz<double, 3>() {}
   MacierzObr(Wektor3D kat);
   MacierzObr(double kat, wymiar wym);
+  MacierzObr(double kat, Wektor3D os);
   MacierzObr(const Macierz<double, 3> M) : Macierz<double, 3>(M) {}
 
   MacierzObr Obrot(double kat, wymiar wym);

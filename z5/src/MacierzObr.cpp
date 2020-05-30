@@ -52,6 +52,47 @@ MacierzObr::MacierzObr(double kat, wymiar wym)
     }
 }
 
+MacierzObr::MacierzObr(double kat, Wektor3D os)
+{
+  double temp=kat/180*M_PI;
+  
+  double c=cos(temp);
+  double s=sin(temp);
+  double t=1.0-c;
+
+  double Magnitude=sqrt(os[0]*os[0]+os[1]*os[1]+os[2]*os[2]);
+  if(Magnitude==0)
+    {
+      std::cerr << "Wektor zerowy." << std::endl;
+      exit(8);
+    }
+  double x=os[0]/Magnitude;
+  double y=os[1]/Magnitude;
+  double z=os[2]/Magnitude;
+
+  tab[0][0]=c+x*x*t;
+  tab[1][1]=c+y*y*t;
+  tab[2][2]=c+z*z*t;
+
+  double temp1=x*y*t;
+  double temp2=z*s;
+
+  tab[1][0]=temp1+temp2;
+  tab[0][1]=temp1-temp2;
+  
+  temp1=x*z*t;
+  temp2=y*s;
+
+  tab[2][0]=temp1-temp2;
+  tab[0][2]=temp1+temp2;
+
+  temp1=y*z*t;
+  temp2=x*s;
+
+  tab[2][1]=temp1+temp2;
+  tab[1][2]=temp1-temp2;
+}
+
 MacierzObr MacierzObr::Obrot(double kat, wymiar wym)
 {
   double temp=kat/180*M_PI;   //M_PI z math.h
@@ -111,22 +152,27 @@ Wektor3D operator *(const Wektor3D W, const MacierzObr M)
 
 Wektor3D MacierzObr::Euler()
 {
-  double sy=sqrt(tab[0][0]*tab[0][0]+tab[1][0]*tab[1][0]);
-
-  bool singular = sy<1e-6;
-
   Wektor3D temp;
-  if(!singular)
+
+  if(tab[0][2]>-1.0000001 && tab[0][2]<-0.999999)
     {
-      temp[0]=atan2(tab[2][1],tab[2][2])*180/M_PI;
-      temp[1]=atan2(-tab[2][0],sy)*180/M_PI;
-      temp[2]=atan2(tab[1][0],tab[0][0])*180/M_PI;
+      temp[0]=0;
+      temp[1]=M_PI/2;
+      temp[2]=temp[0]+atan2(tab[1][0],tab[2][0]);
+      return temp*180/M_PI;
+    }
+  else if(tab[0][2]>0.999999 && tab[0][2]<1.0000001)
+    {
+      temp[0]=0;
+      temp[1]=-M_PI/2;
+      temp[2]=-temp[0]+atan2(-tab[1][0],-tab[2][0]);
+      return temp*180/M_PI;
     }
   else
     {
-      temp[0]=atan2(-tab[1][2],tab[1][1])*180/M_PI;
-      temp[1]=atan2(-tab[2][0],sy)*180/M_PI;
-      temp[2]=0;
+      temp[0]=-asin(tab[0][2]);
+      temp[1]=atan2(tab[1][2]/cos(temp[0]),tab[2][2]/cos(temp[0]));
+      temp[2]=atan2(tab[0][1]/cos(temp[0]),tab[0][0]/cos(temp[0]));
+      return temp*180/M_PI;
     }
-  return temp;
 }

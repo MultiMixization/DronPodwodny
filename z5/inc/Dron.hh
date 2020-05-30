@@ -2,7 +2,7 @@
 #define DRON_HH
 
 #define ACCELERATION 0.01
-#define ANGLEACCELERATION 0.1
+#define ANGLEACCELERATION 0.2
 
 #include <unistd.h>
 #include <ncurses.h>
@@ -13,9 +13,10 @@
 #include "Wektor3D.hh"
 #include "Dr3D_gnuplot_api.hh"
 #include "Prostopadloscian.hh"
+#include "DronInterface.hh"
 #include "gran8kat.hh"
 
-class Dron : public Prostopadloscian{
+class Dron : public Prostopadloscian, public DronInterface{
 protected:
   
   /*!
@@ -37,21 +38,6 @@ protected:
    * \brief speed arround stationary axis x
    */
   double PredkoscRoll;
-
-  /*!
-   * \brief angle around axis y
-   */
-  double pitch;
-  
-  /*!
-   * \brief angle arround axis z
-   */
-  double roll;
-  
-  /*!
-   * \brief angle arround axis x
-   */
-  double yaw;
 
   /*!
    * \brief left propeller
@@ -154,42 +140,6 @@ public:
   double getPredkoscRoll() const {return PredkoscRoll;}
 
   /*!
-   * \brief Setter - Pitch angle
-   * \param P - Pitch angle
-   */
-  void setPitch(double P) {pitch=P;}
-
-  /*!
-   * \brief Getter - Pitch angle
-   * \return Pitch angle
-   */
-  double getPitch() const {return pitch;}
-
-  /*!
-   * \brief Setter - Roll angle
-   * \param P - Roll angle
-   */
-  void setRoll(double R) {roll=R;}
-
-     /*!
-   * \brief Getter - Roll angle
-   * \return Roll angle
-   */
-  double getRoll() const {return roll;}
-
-  /*!
-   * \brief Setter - Yaw angle
-   * \param P - Yaw angle
-   */
-  void setYaw(double Y) {yaw=Y;}
-  
-  /*!
-   * \brief Getter - Yaw angle
-   * \return Yaw angle
-   */
-  double getYaw() const {return yaw;}
-
-  /*!
    * \brief changes the speed in direction defined by the char
    * \param znak - char defining the direction of applied acceleration
    */
@@ -209,6 +159,8 @@ public:
    * \brief updates the body and propellers position according to speed, roll, yaw and pitch
    */
   void updatePosition();
+
+  bool Kolizja(std::shared_ptr<DronInterface> IntDron) override;
 };
 
 #endif

@@ -33,8 +33,8 @@ void scena::kontrola()
 	  dron.ruch(znak);
 	}
       dron.updatePosition();
-      delay(FRAMETIME-15);
       flushinp();
+      delay(FRAMETIME-15);
     }
   echo();
   endwin();

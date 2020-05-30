@@ -14,11 +14,7 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   PredkoscYaw=0.00;
   PredkoscRoll=0.00;
   
-  pitch=0.00;
-  roll=90.00;
-  yaw=0.00;
-  
-  MacierzObr temp=MacierzObr(yaw,z)*MacierzObr(pitch,y)*MacierzObr(roll,x);
+  MacierzObr temp=MacierzObr(0.00,z)*MacierzObr(0.00,y)*MacierzObr(0.00,x);  //To nie to
   setOrientacja(temp);
   
   setRef({2,1,1});
@@ -37,9 +33,8 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
 
 void Dron::ruch(char znak)
 {
-  Wektor3D temp;
-  MacierzObr temp2;
-  //Katy Taita-Bryana konwencja zyx
+  //Wektor3D temp;
+  //MacierzObr temp2;
   switch(znak)
     {
     case 'w':
@@ -49,52 +44,22 @@ void Dron::ruch(char znak)
       setPredkoscPrzod(getPredkoscPrzod()-ACCELERATION);
       break;
     case 'a':
-      temp={0,0,1};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION);
       break;
     case 'd':
-      temp={0,0,1};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION);
       break;
     case 'r':
-      temp={0,1,0};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION);
       break;
     case 'f':
-      temp={0,1,0};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION);
       break;
     case 'e':
-      temp={1,0,0};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()-temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()-temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()-temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION);
       break;
     case 'q':
-      temp={1,0,0};
-      temp=getOrientacja()*temp;
-      temp2=MacierzObr(temp[2],z)*MacierzObr(temp[1],y)*MacierzObr(temp[0],x);
-      setPredkoscYaw(getPredkoscYaw()+temp2.Euler()[2]*ANGLEACCELERATION);
-      setPredkoscPitch(getPredkoscPitch()+temp2.Euler()[1]*ANGLEACCELERATION);
-      setPredkoscRoll(getPredkoscRoll()+temp2.Euler()[0]*ANGLEACCELERATION);
+      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION);
       break;
     case ' ':
       setPredkoscPrzod(0);
@@ -110,15 +75,21 @@ void Dron::ruch(char znak)
 void Dron::updatePosition()
 {
   MacierzObr temp;
+  MacierzObr newYaw;
+  MacierzObr newPitch;
+  MacierzObr newRoll;
   Wektor3D vex={1,0,0};
+  Wektor3D vey={0,1,0};
+  Wektor3D vez={0,0,1};
   if(abs(getPredkoscPrzod())>0.0000001 || abs(getPredkoscRoll())>0.0000001 || abs(getPredkoscYaw())>0.0000001 || abs(getPredkoscPitch())>0.0000001)
     {
-      setPitch(getPitch()+getPredkoscPitch());
-      setYaw(getYaw()+getPredkoscYaw());
-      setRoll(getRoll()+getPredkoscRoll());
-      temp=MacierzObr(getYaw(),z)*MacierzObr(getPitch(),y)*MacierzObr(getRoll(),x);
+      newYaw=MacierzObr(getPredkoscYaw(),getOrientacja()*vez);
+      newPitch=MacierzObr(getPredkoscPitch(),getOrientacja()*vey);
+      newRoll=MacierzObr(getPredkoscRoll(),getOrientacja()*vex);
+      //Wektor obrotu w pojedynczej klatce
+      temp=getOrientacja()*(newYaw*newPitch*newRoll);
       setOrientacja(temp);
-      
+
       setSrodek(getSrodek().Translacja(getOrientacja()*(getPredkoscPrzod()*vex)));
       
       wymaz();
