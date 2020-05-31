@@ -8,13 +8,14 @@ using drawNS::APIGnuPlot3D;
 void Woda::rysuj()
 {
   setOrientacja(MacierzObr(0,z)*MacierzObr(0,y)*MacierzObr(0,x));
+  
   vector<vector<Point3D>> PD;
-  for(int j=-PLANEPOINT; j<=PLANEPOINT; ++j)
+  for(int j=-wielkosc; j<=wielkosc; ++j)
     {
       vector<Point3D> PM;
-      for(int i=-PLANEPOINT; i<=PLANEPOINT; ++i)
+      for(int i=-wielkosc; i<=wielkosc; ++i)
 	{
-	  Wektor3D tempW(i*PLANESKIP,j*PLANESKIP, poziom+Noise*(i%2==0?-1:1));
+	  Wektor3D tempW(getSrodek()[0]+i*PLANESKIP,getSrodek()[1]+j*PLANESKIP, getSrodek()[2]+Noise*(i%2==0?-1:1));
 	  tempW=Orientacja*tempW;
 	  PM.push_back(tempW);
 	}

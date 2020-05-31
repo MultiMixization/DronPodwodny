@@ -13,7 +13,7 @@ protected:
   void licz_obrot(Punkt wierzcholki[]);
 
 public:
-  gran8kat() {};
+  gran8kat() {}
   gran8kat(std::shared_ptr<drawNS::Draw3DAPI> A) {api=A;}
   gran8kat(std::shared_ptr<drawNS::Draw3DAPI> A, const Wektor3D R) {api=A; setRef(R);}
   gran8kat(std::shared_ptr<drawNS::Draw3DAPI> A, const MacierzObr M, const Punkt S, const Wektor3D R);

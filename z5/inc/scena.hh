@@ -2,36 +2,40 @@
 #define SCENA_HH
 
 #define FRAMETIME 33
+#define SIZE 30
 
 #include <iostream>
 #include <ncurses.h>
 #include <math.h>
 #include <unistd.h>
 #include <sys/select.h>
+#include <vector>
+#include <memory>
+#include <string>
+#include <stdlib.h>
 
 #include "Dr3D_gnuplot_api.hh"
 #include "MacierzObr.hh"
 #include "Wektor3D.hh"
 #include "Punkt.hh"
-#include "Dron.hh"
 #include "DronInterface.hh"
+#include "Dron.hh"
 #include "Przeszkoda.hh"
 #include "PrzeszkodaProstopadloscian.hh"
-#include "Plaszczyzna.hh"
+#include "Dno.hh"
 #include "Woda.hh"
 
 class scena{
 protected:
-  Dron dron;
-  Woda woda;
-  Plaszczyzna dno;
+  std::vector<std::shared_ptr<DroneInterface>> Drony;
+  std::vector<std::shared_ptr<Przeszkoda>> Przeszkody;
 
 public:
-  scena(std::shared_ptr<drawNS::Draw3DAPI> A) : dron(A), woda(A), dno(A) {}
+  scena(){}
 
   void inicjalizuj();
   
-  void kontrola();
+  void kontrola(int nrDrona);
 
   void sprzatanie();
 };

@@ -2,7 +2,7 @@
 
 MacierzObr::MacierzObr(Wektor3D kat)
   {
-    (*this)=MacierzObr(kat[0], x) * MacierzObr(kat[1], y) * MacierzObr(kat[2], z);
+    (*this)=MacierzObr(kat[2], z) * MacierzObr(kat[1], y) * MacierzObr(kat[0], x);
   }
 
 MacierzObr::MacierzObr(double kat, wymiar wym)

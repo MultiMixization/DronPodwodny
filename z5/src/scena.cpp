@@ -2,15 +2,31 @@
 
 void scena::inicjalizuj()
 {
-  dno.setPoziom(-9);
-  woda.setPoziom(9);
-  woda.rysuj();
-  dno.rysuj();
-  dron.rysujAll();
+  std::shared_ptr<drawNS::Draw3DAPI> api(new drawNS::APIGnuPlot3D(-SIZE,SIZE,-SIZE,SIZE,-SIZE,SIZE,-1));
+  api->change_ref_time_ms(0);
+
+  std::shared_ptr<Dno> dno=std::make_shared<Dno>(api,-25,SIZE);
+  Przeszkody.push_back(dno);
+  dno->rysuj();
+  
+  std::shared_ptr<Woda> woda=std::make_shared<Woda>(api,25,SIZE);
+  Przeszkody.push_back(woda);
+  woda->rysuj();
+
+  std::shared_ptr<Dron> dron0=std::make_shared<Dron>(api, Punkt(0,0,0), MacierzObr(0,z));
+  Drony.push_back(dron0);
+  Przeszkody.push_back(dron0);
+  dron0->rysujAll();
+
+   std::shared_ptr<Dron> dron1=std::make_shared<Dron>(api, Punkt(10,0,0), MacierzObr(90,z));
+  Drony.push_back(dron1);
+  Przeszkody.push_back(dron1);
+  dron1->rysujAll();
+  
   delay(FRAMETIME);
 }
 
-void scena::kontrola()
+void scena::kontrola(int nrDrona=0)
 {
   char znak='x';
   initscr();
@@ -30,9 +46,16 @@ void scena::kontrola()
       if(kbhit())
 	{
 	  znak=getch();
-	  dron.ruch(znak);
+	  Drony[nrDrona]->ruch(znak);
 	}
-      dron.updatePosition();
+      for(auto elem : Przeszkody)
+	{
+	  if(elem->Kolizja(Drony[nrDrona]))
+	    {
+	      Drony[nrDrona]->setPredkoscPrzod(-Drony[nrDrona]->getPredkoscPrzod());
+	    }
+	}
+      Drony[nrDrona]->updatePosition();
       flushinp();
       delay(FRAMETIME-15);
     }
@@ -42,9 +65,6 @@ void scena::kontrola()
 
 void scena::sprzatanie()
 {
-  dron.zmaz();
-  woda.zmaz();
-  dno.zmaz();
   delay(FRAMETIME);
 }
 

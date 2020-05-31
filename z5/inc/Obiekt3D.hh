@@ -18,6 +18,7 @@ public:
   Obiekt3D() {}
   Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A) {api=A; id=-1;}
   Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, MacierzObr M, Punkt P) {api=A; Orientacja=M; Srodek=P; id=-1;}
+  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S) {api=A; Srodek=S; id=-1;}
   ~Obiekt3D() {zmaz();}
   
   void setOrientacja(const MacierzObr M) {Orientacja=M;};
@@ -30,6 +31,8 @@ public:
   std::shared_ptr<drawNS::Draw3DAPI> getApi() const {return api;}
 
   int getID() {return id;}
+
+  virtual void rysuj() = 0;
 
   void zmaz() {if(id!=-1)api->erase_shape(id); id=-1;}
 };

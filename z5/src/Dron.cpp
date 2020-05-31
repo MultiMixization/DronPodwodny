@@ -1,6 +1,6 @@
 #include "Dron.hh"
 
-Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
+Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O)
 {
   setApi(A);
   Sruba1.setApi(A);
@@ -8,14 +8,13 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A)
   //Plywak1.setApi(A);
   //Plywak2.setApi(A);
   
-  Srodek={0,0,0};
+  Srodek=S;
   PredkoscPrzod=0.00;
   PredkoscPitch=0.00;
   PredkoscYaw=0.00;
   PredkoscRoll=0.00;
   
-  MacierzObr temp=MacierzObr(0.00,z)*MacierzObr(0.00,y)*MacierzObr(0.00,x);  //To nie to
-  setOrientacja(temp);
+  setOrientacja(O);
   
   setRef({2,1,1});
 
@@ -140,3 +139,16 @@ void Dron::rysPlywak2()
   Plywak2.rysuj();
 }
 */
+
+bool Dron::Kolizja(std::shared_ptr<DroneInterface> IntDron)
+{
+  if(IntDron->getSrodek()==getSrodek())
+    {
+      return false;
+    }
+  if(IntDron->getSrodek().Wektor(getSrodek()).dlugosc()<getRef().dlugosc()+IntDron->getSrednica())
+    {
+      return true;
+    }
+  return false;
+}

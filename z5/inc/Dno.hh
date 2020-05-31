@@ -1,0 +1,24 @@
+#ifndef DNO_HH
+#define DNO_HH
+
+#include "Przeszkoda.hh" 
+#include "Plaszczyzna.hh"
+#include <iostream>
+
+class Dno : public Plaszczyzna, public Przeszkoda{
+protected:
+public:
+  Dno(std::shared_ptr<drawNS::Draw3DAPI> A, double Z=-10, int S=PLANEPOINT) : Plaszczyzna(A,Z,S){};
+
+  
+  bool Kolizja(std::shared_ptr<DroneInterface> IntDron) override
+  {
+    if(IntDron->getSrodek()[2]-IntDron->getSrednica() < getSrodek()[2])
+      {
+	return true;
+      }
+    return false;
+  }
+};
+
+#endif

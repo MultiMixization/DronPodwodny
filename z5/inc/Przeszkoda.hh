@@ -7,10 +7,10 @@
 #include "Dr3D_gnuplot_api.hh"
 #include <iostream>
 
-class Preszkoda{
+class Przeszkoda{
 protected:
 public:
-  virtual bool Kolizja(std::shared_ptr<DronInterface> IntDron) = 0;
+  virtual bool Kolizja(std::shared_ptr<DroneInterface> IntDron) = 0;
 };
 
 #endif

@@ -15,8 +15,9 @@
 #include "Prostopadloscian.hh"
 #include "DronInterface.hh"
 #include "gran8kat.hh"
+#include "Przeszkoda.hh"
 
-class Dron : public Prostopadloscian, public DronInterface{
+class Dron : public Prostopadloscian, public DroneInterface, public Przeszkoda{
 protected:
   
   /*!
@@ -84,7 +85,7 @@ public:
    * \brief Constructor
    * \param A - poiner on api
    */
-  Dron(std::shared_ptr<drawNS::Draw3DAPI> A);
+  Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O);
 
   /*!
    * \brief Destructor
@@ -95,13 +96,13 @@ public:
    * \brief Setter - Forward speed
    * \param P - Forward speed
    */
-  void setPredkoscPrzod(double P) {PredkoscPrzod=P;}
+  void setPredkoscPrzod(double P) override {PredkoscPrzod=P;}
 
    /*!
    * \brief Getter - Forward speed
    * \return Forward speed
    */
-  double getPredkoscPrzod() const {return PredkoscPrzod;}
+  double getPredkoscPrzod() override {return PredkoscPrzod;}
 
   /*!
    * \brief Setter - Pitch speed
@@ -143,24 +144,28 @@ public:
    * \brief changes the speed in direction defined by the char
    * \param znak - char defining the direction of applied acceleration
    */
-  void ruch(char znak);
+  void ruch(char znak) override;
 
   /*!
    * \brief draws the body and the propellers
    */
-  void rysujAll();
+  void rysujAll() override;
 
   /*!
    * \brief erases the body and the propellers
    */
-  void wymaz();
+  void wymaz() override;
 
   /*!
    * \brief updates the body and propellers position according to speed, roll, yaw and pitch
    */
-  void updatePosition();
+  void updatePosition() override;
 
-  bool Kolizja(std::shared_ptr<DronInterface> IntDron) override;
+  double getSrednica() override {return referencyjny.dlugosc();}
+
+  Punkt getSrodek() override {return Obiekt3D::getSrodek();}
+
+  bool Kolizja(std::shared_ptr<DroneInterface> IntDron) override;
 };
 
 #endif

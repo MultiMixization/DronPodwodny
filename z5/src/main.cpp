@@ -1,8 +1,4 @@
 #include <iostream>
-
-#define SIZE 10
-
-#include <iostream>
 #include <math.h>
 
 #include "Dr3D_gnuplot_api.hh"
@@ -26,16 +22,10 @@ void wait4key()
 
 int main()
 {
-  //std::cin.tie(NULL); //Przyspiesz wyswietlanie tekstu co zwieksza responsywnosc
-  std::shared_ptr<drawNS::Draw3DAPI> api(new APIGnuPlot3D(-SIZE,SIZE,-SIZE,SIZE,-SIZE,SIZE));
-  api->change_ref_time_ms(0);
-  
-  scena glowna(api);
+  scena glowna;
   glowna.inicjalizuj();
-  glowna.kontrola();
+  glowna.kontrola(0);
   glowna.sprzatanie();
-
-  //cout << sizeof(glowna) << endl;
   
   return 0;
 }

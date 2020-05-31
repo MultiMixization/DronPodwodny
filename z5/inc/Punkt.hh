@@ -17,6 +17,10 @@ public:
   const double & operator [](int index) const;
   double & operator [](int index);
 
+  bool operator ==(const Punkt P) const;
+  bool operator !=(const Punkt P) const;
+
   Punkt Translacja(const Wektor3D W);
+  Wektor3D Wektor(const Punkt P);
 };
 #endif

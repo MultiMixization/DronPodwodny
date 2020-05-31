@@ -11,7 +11,7 @@ enum wymiar{x, y, z};
 
 class MacierzObr : public Macierz<double, 3>{
 public:
-  MacierzObr() : Macierz<double, 3>() {}
+  MacierzObr() : Macierz<double, 3>(){for(int i=0;i<3;i++){tab[i][i]=1;}}
   MacierzObr(Wektor3D kat);
   MacierzObr(double kat, wymiar wym);
   MacierzObr(double kat, Wektor3D os);
