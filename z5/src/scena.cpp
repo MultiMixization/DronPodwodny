@@ -13,12 +13,16 @@ void scena::inicjalizuj()
   Przeszkody.push_back(woda);
   woda->rysuj();
 
-  std::shared_ptr<Dron> dron0=std::make_shared<Dron>(api, Punkt(0,0,0), MacierzObr(0,z));
+  std::shared_ptr<PrzeszkodaProstopadloscian> kamien1=std::make_shared<PrzeszkodaProstopadloscian>(api, MacierzObr(0,z), Punkt(5,10,-15), Wektor3D(5,7,10));
+  Przeszkody.push_back(kamien1);
+  kamien1->rysuj();
+
+  std::shared_ptr<Dron> dron0=std::make_shared<Dron>(api, Punkt(0,0,0), MacierzObr(0,Wektor3D(0,0,1)));
   Drony.push_back(dron0);
   Przeszkody.push_back(dron0);
   dron0->rysujAll();
 
-   std::shared_ptr<Dron> dron1=std::make_shared<Dron>(api, Punkt(10,0,0), MacierzObr(90,z));
+  std::shared_ptr<Dron> dron1=std::make_shared<Dron>(api, Punkt(10,0,0), MacierzObr(90,Wektor3D(0,0,1)));
   Drony.push_back(dron1);
   Przeszkody.push_back(dron1);
   dron1->rysujAll();

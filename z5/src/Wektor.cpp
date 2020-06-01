@@ -47,8 +47,7 @@ Wektor<typ, rozmiar> Wektor<typ, rozmiar>::operator -(const Wektor<typ, rozmiar>
 template <typename typ, int rozmiar>
 typ Wektor<typ, rozmiar>::operator *(const Wektor<typ, rozmiar> & W2) const
 {
-  typ wynik;
-  wynik=0;
+  typ wynik(0.0);
   for(int i=0;i<rozmiar;i++)
     {
       wynik=wynik+((*this)[i]*W2[i]);

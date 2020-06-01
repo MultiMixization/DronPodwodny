@@ -9,12 +9,11 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O)
   //Plywak2.setApi(A);
   
   Srodek=S;
+  setOrientacja(O);
   PredkoscPrzod=0.00;
   PredkoscPitch=0.00;
   PredkoscYaw=0.00;
   PredkoscRoll=0.00;
-  
-  setOrientacja(O);
   
   setRef({2,1,1});
 
@@ -32,8 +31,6 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O)
 
 void Dron::ruch(char znak)
 {
-  //Wektor3D temp;
-  //MacierzObr temp2;
   switch(znak)
     {
     case 'w':
@@ -49,10 +46,10 @@ void Dron::ruch(char znak)
       setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION);
       break;
     case 'r':
-      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION);
       break;
     case 'f':
-      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION);
+      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION);
       break;
     case 'e':
       setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION);
@@ -86,8 +83,8 @@ void Dron::updatePosition()
       newPitch=MacierzObr(getPredkoscPitch(),getOrientacja()*vey);
       newRoll=MacierzObr(getPredkoscRoll(),getOrientacja()*vex);
       //Wektor obrotu w pojedynczej klatce
-      temp=getOrientacja()*(newYaw*newPitch*newRoll);
-      setOrientacja(temp);
+      temp=newYaw*newPitch*newPitch;   //Dziwne
+      Orientacja=Orientacja*temp;
 
       setSrodek(getSrodek().Translacja(getOrientacja()*(getPredkoscPrzod()*vex)));
       

@@ -55,7 +55,7 @@ MacierzObr::MacierzObr(double kat, wymiar wym)
 MacierzObr::MacierzObr(double kat, Wektor3D os)
 {
   double temp=kat/180*M_PI;
-  
+
   double c=cos(temp);
   double s=sin(temp);
   double t=1.0-c;
@@ -77,20 +77,20 @@ MacierzObr::MacierzObr(double kat, Wektor3D os)
   double temp1=x*y*t;
   double temp2=z*s;
 
-  tab[1][0]=temp1+temp2;
-  tab[0][1]=temp1-temp2;
+  tab[0][1]=temp1+temp2;
+  tab[1][0]=temp1-temp2;
   
   temp1=x*z*t;
   temp2=y*s;
 
-  tab[2][0]=temp1-temp2;
-  tab[0][2]=temp1+temp2;
+  tab[0][2]=temp1-temp2;
+  tab[2][0]=temp1+temp2;
 
   temp1=y*z*t;
   temp2=x*s;
 
-  tab[2][1]=temp1+temp2;
-  tab[1][2]=temp1-temp2;
+  tab[1][2]=temp1+temp2;
+  tab[2][1]=temp1-temp2;
 }
 
 MacierzObr MacierzObr::Obrot(double kat, wymiar wym)

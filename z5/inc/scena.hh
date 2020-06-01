@@ -1,7 +1,7 @@
 #ifndef SCENA_HH
 #define SCENA_HH
 
-#define FRAMETIME 33
+#define FRAMETIME 20
 #define SIZE 30
 
 #include <iostream>
