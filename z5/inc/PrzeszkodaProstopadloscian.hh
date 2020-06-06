@@ -6,6 +6,8 @@
 #include "MacierzObr.hh"
 #include "Punkt.hh"
 #include "Dr3D_gnuplot_api.hh"
+#include <math.h>
+#include <stdlib.h>
 #include <iostream>
 
 class PrzeszkodaProstopadloscian : public Przeszkoda, public Prostopadloscian{
@@ -16,11 +18,23 @@ public:
 
   bool Kolizja(std::shared_ptr<DroneInterface> IntDron) override
   {
-    if(IntDron->getSrodek().Wektor(getSrodek()).dlugosc()<getRef().dlugosc()+IntDron->getSrednica())
+    Wektor3D tempW=getOrientacja()*getRef();
+    Punkt tempD=IntDron->getSrodek();
+    Punkt tempC=getSrodek();
+
+    if(!(abs(tempD[0]-tempC[0])<tempW[0]+IntDron->getSrednica()))
       {
-	return true;
+	return false;
       }
-    return false;
+    if(!(abs(tempD[1]-tempC[1])<tempW[1]+IntDron->getSrednica()))
+      {
+	return false;
+      }
+    if(!(abs(tempD[2]-tempC[2])<tempW[2]+IntDron->getSrednica()))
+      {
+	return false;
+      }
+    return true;
   }
 };
 

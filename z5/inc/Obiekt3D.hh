@@ -14,12 +14,18 @@ protected:
   MacierzObr Orientacja;
   Punkt Srodek;
   int id;
+
+  static int Wszystkie;
+  static int Zniszczone;
 public:
-  Obiekt3D() {}
-  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A) {api=A; id=-1;}
-  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, MacierzObr M, Punkt P) {api=A; Orientacja=M; Srodek=P; id=-1;}
-  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S) {api=A; Srodek=S; id=-1;}
-  ~Obiekt3D() {zmaz();}
+  Obiekt3D() {Wszystkie++;};
+  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A) {api=A; id=-1; Wszystkie++;}
+  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, MacierzObr M, Punkt P) {api=A; Orientacja=M; Srodek=P; id=-1; Wszystkie++;}
+  Obiekt3D(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S) {api=A; Srodek=S; id=-1; Wszystkie++;}
+  ~Obiekt3D() {zmaz(); Zniszczone++;}
+
+  static int getWszystkie(){return Wszystkie;}
+  static int getZniszczone(){return Zniszczone;}
   
   void setOrientacja(const MacierzObr M) {Orientacja=M;};
   MacierzObr getOrientacja() const {return Orientacja;};

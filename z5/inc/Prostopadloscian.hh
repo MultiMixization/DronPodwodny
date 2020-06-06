@@ -15,7 +15,7 @@ protected:
   void licz_obrot(Punkt wierzcholki[]);
 
 public:
-  Prostopadloscian() {};
+  Prostopadloscian(){}
   Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A) {api=A;}
   Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A, const Wektor3D R) {api=A; setRef(R);}
   Prostopadloscian(std::shared_ptr<drawNS::Draw3DAPI> A, const MacierzObr M, const Punkt S, const Wektor3D R);

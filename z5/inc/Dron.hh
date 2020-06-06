@@ -161,10 +161,21 @@ public:
    */
   void updatePosition() override;
 
+  /*
+   * \brief Getter - Longest vector begining at the center of Drone and ending at its body
+   */
   double getSrednica() override {return referencyjny.dlugosc();}
 
+  /*
+   * \brief Getter - Center of drone
+   * \return Center oof drone
+   */
   Punkt getSrodek() override {return Obiekt3D::getSrodek();}
 
+  /*
+   * \brief Checks if there is a collision with an obstacle
+   * \return ix collision present
+   */
   bool Kolizja(std::shared_ptr<DroneInterface> IntDron) override;
 };
 

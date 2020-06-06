@@ -1,5 +1,8 @@
 #include "Wektor3D.hh"
 
+int Wektor3D::Wszystkie=0;
+int Wektor3D::Zniszczone=0;
+
 Wektor3D Wektor3D::Odwroc(bool xx, bool yy, bool zz) const
 {
   Wektor3D temp=(*this);

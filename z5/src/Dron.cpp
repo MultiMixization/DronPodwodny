@@ -59,9 +59,9 @@ void Dron::ruch(char znak)
       break;
     case ' ':
       setPredkoscPrzod(0);
-      setPredkoscRoll(0);
-      setPredkoscYaw(0);
-      setPredkoscPitch(0);
+      //setPredkoscRoll(0);
+      //setPredkoscYaw(0);
+      //setPredkoscPitch(0);
       break;
     default:
       break;
