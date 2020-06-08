@@ -1,8 +1,8 @@
 #ifndef DRON_HH
 #define DRON_HH
 
-#define ACCELERATION 0.01
-#define ANGLEACCELERATION 0.2
+#define ACCELERATION 0.02
+#define ANGLEACCELERATION 1
 
 #include <unistd.h>
 #include <ncurses.h>
@@ -24,21 +24,8 @@ protected:
    * \brief speed forward
    */
   double PredkoscPrzod;
-  
-  /*!
-   * \brief speed arround stationary axis y
-   */
-  double PredkoscPitch;
-  
-  /*!
-   * \brief speed arround stationary axis z
-   */
-  double PredkoscYaw;
-  
-  /*!
-   * \brief speed arround stationary axis x
-   */
-  double PredkoscRoll;
+
+  MacierzObr angleRotation;
 
   /*!
    * \brief left propeller
@@ -96,7 +83,7 @@ public:
    * \brief Setter - Forward speed
    * \param P - Forward speed
    */
-  void setPredkoscPrzod(double P) override {PredkoscPrzod=P;}
+  void setPredkoscPrzod(const double P) override {PredkoscPrzod=P;}
 
    /*!
    * \brief Getter - Forward speed
@@ -105,46 +92,22 @@ public:
   double getPredkoscPrzod() override {return PredkoscPrzod;}
 
   /*!
-   * \brief Setter - Pitch speed
-   * \param P - Pitch speed
+   * \brief Setter - Rotation matrix in one frame
+   * \param M - Rotation Matrix
    */
-  void setPredkoscPitch(double P) {PredkoscPitch=P;}
+  void setAngleRotation(const MacierzObr M) {angleRotation=M;}
 
   /*!
-   * \brief Getter - Pitch speed
-   * \return Pitch speed
+   * \brief Getter - Rotation matrix in one frame
+   * \return Rotation Matrix
    */
-  double getPredkoscPitch() const {return PredkoscPitch;}
-
-  /*!
-   * \brief Setter - Yaw speed
-   * \param P - Yaw speed
-   */
-  void setPredkoscYaw(double P) {PredkoscYaw=P;}
-
-  /*!
-   * \brief Getter - Yaw speed
-   * \return Yaw speed
-   */
-  double getPredkoscYaw() const {return PredkoscYaw;}
-
-  /*!
-   * \brief Setter - Roll speed
-   * \param P - Roll speed
-   */
-  void setPredkoscRoll(double P) {PredkoscRoll=P;}
-
-  /*!
-   * \brief Getter - Roll speed
-   * \return Roll speed
-   */
-  double getPredkoscRoll() const {return PredkoscRoll;}
+  MacierzObr getAngleRotation() const {return angleRotation;}
 
   /*!
    * \brief changes the speed in direction defined by the char
    * \param znak - char defining the direction of applied acceleration
    */
-  void ruch(char znak) override;
+  void ruch(const char znak) override;
 
   /*!
    * \brief draws the body and the propellers

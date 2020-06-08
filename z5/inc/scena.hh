@@ -1,7 +1,7 @@
 #ifndef SCENA_HH
 #define SCENA_HH
 
-#define FRAMETIME 20
+#define FRAMETIME 30
 #define SIZE 30
 
 #include <iostream>
@@ -29,6 +29,7 @@ class scena{
 protected:
   std::vector<std::shared_ptr<DroneInterface>> Drony;
   std::vector<std::shared_ptr<Przeszkoda>> Przeszkody;
+  std::vector<std::shared_ptr<Obiekt3D>> Obiekty3D;
 
 public:
   scena(){}

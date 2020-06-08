@@ -11,13 +11,14 @@ enum wymiar{x, y, z};
 
 class MacierzObr : public Macierz<double, 3>{
 public:
-  MacierzObr() : Macierz<double, 3>(){for(int i=0;i<3;i++){tab[i][i]=1;}}
-  MacierzObr(Wektor3D kat);
-  MacierzObr(double kat, wymiar wym);
-  MacierzObr(double kat, Wektor3D os);
+  MacierzObr() : Macierz<double, 3>(){for(int i=0;i<3;i++){tab[i][i]=1.0;}}
+  MacierzObr(const Wektor3D kat);
+  MacierzObr(const double kat, const wymiar wym);
+  MacierzObr(const double kat, const Wektor3D os);
   MacierzObr(const Macierz<double, 3> M) : Macierz<double, 3>(M) {}
 
-  MacierzObr Obrot(double kat, wymiar wym);
+  MacierzObr Obrot(const double kat, const wymiar wym);
+  //MacierzObr ObrRodrigues(double kat, Wektor3D os); //Wzor obrotowy rodrigues'a. Zabijcie mnie
   Wektor3D Euler();
 };
 

@@ -7,37 +7,45 @@ void scena::inicjalizuj()
 
   std::shared_ptr<Dno> dno=std::make_shared<Dno>(api,-25,SIZE);
   Przeszkody.push_back(dno);
+  Obiekty3D.push_back(dno);
   dno->rysuj();
   
   std::shared_ptr<Woda> woda=std::make_shared<Woda>(api,25,SIZE);
   Przeszkody.push_back(woda);
+  Obiekty3D.push_back(woda);
   woda->rysuj();
 
   std::shared_ptr<PrzeszkodaProstopadloscian> kamien0=std::make_shared<PrzeszkodaProstopadloscian>(api, MacierzObr(0,z), Punkt(-10,-7,-15), Wektor3D(5,7,10));
   Przeszkody.push_back(kamien0);
+  Obiekty3D.push_back(kamien0);
   kamien0->rysuj();
 
   std::shared_ptr<PrzeszkodaProstopadloscian> kamien1=std::make_shared<PrzeszkodaProstopadloscian>(api, MacierzObr(0,z), Punkt(5,10,-15), Wektor3D(2,3,4));
   Przeszkody.push_back(kamien1);
+  Obiekty3D.push_back(kamien1);
   kamien1->rysuj();
 
   std::shared_ptr<PrzeszkodaProstopadloscian> kamien2=std::make_shared<PrzeszkodaProstopadloscian>(api, MacierzObr(0,z), Punkt(5,-5,-17), Wektor3D(3,7,3));
   Przeszkody.push_back(kamien2);
+  Obiekty3D.push_back(kamien2);
   kamien2->rysuj();
 
-  std::shared_ptr<Dron> dron0=std::make_shared<Dron>(api, Punkt(0,0,0), MacierzObr(0,Wektor3D(0,0,1)));
+  std::shared_ptr<Dron> dron0=std::make_shared<Dron>(api, Punkt(0,0,0), MacierzObr()*MacierzObr(0,z));
   Drony.push_back(dron0);
   Przeszkody.push_back(dron0);
+  Obiekty3D.push_back(dron0);
   dron0->rysujAll();
 
-  std::shared_ptr<Dron> dron1=std::make_shared<Dron>(api, Punkt(10,0,0), MacierzObr(90,Wektor3D(0,0,1)));
+  std::shared_ptr<Dron> dron1=std::make_shared<Dron>(api, Punkt(10,0,0), MacierzObr()*MacierzObr(90,z));
   Drony.push_back(dron1);
   Przeszkody.push_back(dron1);
+  Obiekty3D.push_back(dron1);
   dron1->rysujAll();
 
-  std::shared_ptr<Dron> dron2=std::make_shared<Dron>(api, Punkt(5,5,-5), MacierzObr(-45,Wektor3D(0,0,1)));
+  std::shared_ptr<Dron> dron2=std::make_shared<Dron>(api, Punkt(5,5,-5), MacierzObr()*MacierzObr(-45,z));
   Drony.push_back(dron2);
   Przeszkody.push_back(dron2);
+  Obiekty3D.push_back(dron2);
   dron2->rysujAll();
   
   delay(FRAMETIME);
@@ -82,6 +90,10 @@ void scena::kontrola(int nrDrona=0)
 
 void scena::sprzatanie()
 {
+  for(auto elem : Obiekty3D)
+    {
+      elem->zmaz();
+    }
   delay(FRAMETIME);
 }
 

@@ -94,7 +94,7 @@ bool Wektor<typ, rozmiar>::operator ==(const Wektor<typ, rozmiar> &W2) const
 {
   for(int i=0;i<rozmiar;i++)
     {
-      if(abs((*this)[i]-W2[i])>0.00001)
+      if(abs((*this)[i]-W2[i])>0.000000001)
 	{
 	  return 0;
 	}

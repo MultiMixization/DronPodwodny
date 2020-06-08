@@ -130,7 +130,7 @@ Macierz<typ, rozmiar> Macierz<typ, rozmiar>::operator *(const Macierz<typ, rozmi
     {
       for(int j=0;j<rozmiar;j++)
 	{
-	  temp[j][i]=temp[j][i]+MATrans[j]*B[i];
+	  temp[j][i]+=MATrans[j]*B[i];
 	}
     }
   return temp;
@@ -184,11 +184,11 @@ template<typename typ, int rozmiar>
 Macierz<typ, rozmiar> Macierz<typ, rozmiar>::transponuj() const
 {
   Macierz<typ, rozmiar> temp;
-  for(int i=0;i<rozmiar;i++)
+  for(int j=0;j<rozmiar;j++)
     {
-      for(int j=0;j<rozmiar;j++)
+      for(int i=0;i<rozmiar;i++)
 	{
-	  temp[i][j]=(*this)[j][i];
+	  temp[j][i]=(*this)[i][j];
 	}
     }
   return temp;

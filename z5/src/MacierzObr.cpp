@@ -1,11 +1,11 @@
 #include "MacierzObr.hh"
 
-MacierzObr::MacierzObr(Wektor3D kat)
+MacierzObr::MacierzObr(const Wektor3D kat)
   {
-    (*this)=MacierzObr(kat[2], z) * MacierzObr(kat[1], y) * MacierzObr(kat[0], x);
+    (*this)=MacierzObr(kat[2], Wektor3D(0,0,1)) * MacierzObr(kat[1], Wektor3D(0,1,0)) * MacierzObr(kat[0], Wektor3D(1,0,0));
   }
 
-MacierzObr::MacierzObr(double kat, wymiar wym)
+MacierzObr::MacierzObr(const double kat, const wymiar wym)
 {
   double temp=kat/180*M_PI;   //M_PI z math.h
   switch (wym)
@@ -52,13 +52,13 @@ MacierzObr::MacierzObr(double kat, wymiar wym)
     }
 }
 
-MacierzObr::MacierzObr(double kat, Wektor3D os)
+MacierzObr::MacierzObr(const double kat, const Wektor3D os)
 {
   double temp=kat/180*M_PI;
 
   double c=cos(temp);
   double s=sin(temp);
-  double t=1.0-c;
+  double t=1-c;
 
   double Magnitude=sqrt(os[0]*os[0]+os[1]*os[1]+os[2]*os[2]);
   if(Magnitude==0)
@@ -74,26 +74,17 @@ MacierzObr::MacierzObr(double kat, Wektor3D os)
   tab[1][1]=c+y*y*t;
   tab[2][2]=c+z*z*t;
 
-  double temp1=x*y*t;
-  double temp2=z*s;
+  tab[0][1]=x*y*t-z*s;
+  tab[0][2]=x*z*t+y*s;
 
-  tab[0][1]=temp1+temp2;
-  tab[1][0]=temp1-temp2;
-  
-  temp1=x*z*t;
-  temp2=y*s;
+  tab[1][0]=y*x*t+z*s;
+  tab[1][2]=y*z*t-x*s;
 
-  tab[0][2]=temp1-temp2;
-  tab[2][0]=temp1+temp2;
-
-  temp1=y*z*t;
-  temp2=x*s;
-
-  tab[1][2]=temp1+temp2;
-  tab[2][1]=temp1-temp2;
+  tab[2][0]=z*x*t-y*s;
+  tab[2][1]=z*y*t+x*s;
 }
 
-MacierzObr MacierzObr::Obrot(double kat, wymiar wym)
+MacierzObr MacierzObr::Obrot(const double kat, const wymiar wym)
 {
   double temp=kat/180*M_PI;   //M_PI z math.h
   switch (wym)

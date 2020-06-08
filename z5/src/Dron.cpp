@@ -11,9 +11,7 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O)
   Srodek=S;
   setOrientacja(O);
   PredkoscPrzod=0.00;
-  PredkoscPitch=0.00;
-  PredkoscYaw=0.00;
-  PredkoscRoll=0.00;
+  setAngleRotation(MacierzObr(Wektor3D(0,0,0)));
   
   setRef({2,1,1});
 
@@ -29,7 +27,7 @@ Dron::Dron(std::shared_ptr<drawNS::Draw3DAPI> A, Punkt S, MacierzObr O)
   //WekPlywak2={0,-getRef()[1],-getRef()[2]};
 }
 
-void Dron::ruch(char znak)
+void Dron::ruch(const char znak)
 {
   switch(znak)
     {
@@ -40,28 +38,29 @@ void Dron::ruch(char znak)
       setPredkoscPrzod(getPredkoscPrzod()-ACCELERATION);
       break;
     case 'a':
-      setPredkoscYaw(getPredkoscYaw()+ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(ANGLEACCELERATION,getOrientacja()*Wektor3D(0,0,1)));
       break;
     case 'd':
-      setPredkoscYaw(getPredkoscYaw()-ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(-ANGLEACCELERATION,getOrientacja()*Wektor3D(0,0,1)));
       break;
     case 'r':
-      setPredkoscPitch(getPredkoscPitch()+ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(ANGLEACCELERATION,getOrientacja()*Wektor3D(0,1,0)));
       break;
     case 'f':
-      setPredkoscPitch(getPredkoscPitch()-ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(-ANGLEACCELERATION,getOrientacja()*Wektor3D(0,1,0)));
       break;
     case 'e':
-      setPredkoscRoll(getPredkoscRoll()-ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(-ANGLEACCELERATION,getOrientacja()*Wektor3D(1,0,0)));
       break;
     case 'q':
-      setPredkoscRoll(getPredkoscRoll()+ANGLEACCELERATION);
+      setAngleRotation(getAngleRotation()*MacierzObr(ANGLEACCELERATION,getOrientacja()*Wektor3D(1,0,0)));
       break;
     case ' ':
       setPredkoscPrzod(0);
-      //setPredkoscRoll(0);
-      //setPredkoscYaw(0);
-      //setPredkoscPitch(0);
+      setAngleRotation(MacierzObr(Wektor3D(0,0,0)));
+      break;
+    case 'z':
+      setAngleRotation(MacierzObr(Wektor3D(0,0,0)));
       break;
     default:
       break;
@@ -70,27 +69,15 @@ void Dron::ruch(char znak)
 
 void Dron::updatePosition()
 {
-  MacierzObr temp;
-  MacierzObr newYaw;
-  MacierzObr newPitch;
-  MacierzObr newRoll;
-  Wektor3D vex={1,0,0};
-  Wektor3D vey={0,1,0};
-  Wektor3D vez={0,0,1};
-  if(abs(getPredkoscPrzod())>0.0000001 || abs(getPredkoscRoll())>0.0000001 || abs(getPredkoscYaw())>0.0000001 || abs(getPredkoscPitch())>0.0000001)
-    {
-      newYaw=MacierzObr(getPredkoscYaw(),getOrientacja()*vez);
-      newPitch=MacierzObr(getPredkoscPitch(),getOrientacja()*vey);
-      newRoll=MacierzObr(getPredkoscRoll(),getOrientacja()*vex);
-      //Wektor obrotu w pojedynczej klatce
-      temp=newYaw*newPitch*newPitch;   //Dziwne
-      Orientacja=Orientacja*temp;
-
-      setSrodek(getSrodek().Translacja(getOrientacja()*(getPredkoscPrzod()*vex)));
-      
-      wymaz();
-      rysujAll();
-    }
+  //if(abs(getPredkoscPrzod())>0.0000001 || getAngleRotation()!=MacierzObr(Wektor3D(0,0,0)))
+  //{
+  setOrientacja(getOrientacja()*getAngleRotation());
+  setSrodek(getSrodek().Translacja(getOrientacja()*(getPredkoscPrzod()*Wektor3D(1,0,0))));
+  
+  wymaz();
+  rysujAll();
+      //}
+  //Jest bug ktory po kazdej klatce przywraca orientacje do polozenia startowego. Nie wiem dlaczego. Mam dosc.
 }
 
 void Dron::rysujAll()
@@ -109,15 +96,15 @@ void Dron::wymaz()
 
 void Dron::rysSrb1()
 {
-  Sruba1.setOrientacja(Orientacja*MacierzObr(90,y));
-  Sruba1.setSrodek(Srodek.Translacja(Orientacja*WekSruba1));
+  Sruba1.setOrientacja(getOrientacja()*MacierzObr(90,y));
+  Sruba1.setSrodek(Srodek.Translacja(getOrientacja()*WekSruba1));
   Sruba1.rysuj();
 }
 
 void Dron::rysSrb2()
 {
-  Sruba2.setOrientacja(Orientacja*MacierzObr(90,y));
-  Sruba2.setSrodek(Srodek.Translacja(Orientacja*WekSruba2));
+  Sruba2.setOrientacja(getOrientacja()*MacierzObr(90,y));
+  Sruba2.setSrodek(Srodek.Translacja(getOrientacja()*WekSruba2));
   Sruba2.rysuj();
 }
 /*
